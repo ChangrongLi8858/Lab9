@@ -102,6 +102,43 @@
 
     // Start your code here
     // You may move this JS to another file if you wish
+    let logBtn = errorBtns.find(btn => btn.textContent === "Console Log");
+    let errorBtn = errorBtns.find(btn => btn.textContent === "Console Error");
+
+    logBtn.addEventListener('click', () => {
+      console.log("Console Log Demo");
+    });
+
+    errorBtn.addEventListener('click', () => {
+      console.error("Console Error Demo");
+    });
+
+    let countBtn = errorBtns.find(btn => btn.textContent === "Console Count");
+    let warnBtn = errorBtns.find(btn => btn.textContent === "Console Warn");
+    let assertBtn = errorBtns.find(btn => btn.textContent === "Console Assert");
+    let clearBtn = errorBtns.find(btn => btn.textContent === "Console Clear");
+
+    let count = 0;
+
+    countBtn.addEventListener('click', () => {
+      count++;
+      console.count(`Count Button`);
+    });
+
+    warnBtn.addEventListener('click', () => {
+      console.warn("Console Warn Button");
+    });
+
+    assertBtn.addEventListener('click', () => {
+      console.assert(false, "Console Assert failed condition");
+    });
+
+    clearBtn.addEventListener('click', () => {
+      console.clear();
+      console.log("console was cleared");
+      count = 0;
+    });
+
   </script>
 </body>
 
