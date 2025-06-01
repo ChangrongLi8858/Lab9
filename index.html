@@ -88,6 +88,9 @@
   </main>
 
   <script>
+    let inGroup = false;
+    let groupLogs = [];
+
     let form = document.querySelector('form');
     form.addEventListener('submit', e => {
       e.preventDefault();
@@ -107,10 +110,12 @@
 
     logBtn.addEventListener('click', () => {
       console.log("Console Log Demo");
+      logAction("Console Log");
     });
 
     errorBtn.addEventListener('click', () => {
       console.error("Console Error Demo");
+      logAction("Console Error");
     });
 
     let countBtn = errorBtns.find(btn => btn.textContent === "Console Count");
@@ -123,21 +128,93 @@
     countBtn.addEventListener('click', () => {
       count++;
       console.count(`Count Button`);
+      logAction("Console Count");
     });
 
     warnBtn.addEventListener('click', () => {
       console.warn("Console Warn Button");
+      logAction("Console Warn");
     });
 
     assertBtn.addEventListener('click', () => {
       console.assert(false, "Console Assert failed condition");
+      logAction("Console Asser");
     });
 
     clearBtn.addEventListener('click', () => {
       console.clear();
       console.log("console was cleared");
       count = 0;
+      logAction("Console Clear");
     });
+
+    //second line
+    let dirBtn = errorBtns.find(btn => btn.textContent === "Console Dir");
+    let dirxmlBtn = errorBtns.find(btn => btn.textContent === "Console dirxml");
+
+    dirBtn.addEventListener('click', (e) => {
+      console.dir(e.target); 
+      logAction("Console Dir");
+    });
+
+    dirxmlBtn.addEventListener('click', (e) => {
+      console.dirxml(e.target);
+      logAction("Console Dirxml");
+    });
+
+    let groupStartBtn = errorBtns.find(btn => btn.textContent === "Console Group Start");
+    let groupEndBtn = errorBtns.find(btn => btn.textContent === "Console Group End");
+
+    groupStartBtn.addEventListener('click', () => {
+      console.group("console.group");
+      inGroup = true;
+      groupLogs = []; 
+    });
+
+    groupEndBtn.addEventListener('click', () => {
+      console.groupEnd();
+      inGroup = false;
+    });
+
+
+    let tableBtn = errorBtns.find(btn => btn.textContent === "Console Table");
+    tableBtn.addEventListener('click', () => {
+      console.table(groupLogs);
+    });
+
+    let logHistory = [];
+
+    function logAction(name) {
+      if (inGroup) {
+        const stackLines = new Error().stack.split("\n");
+        const callerLine = stackLines[2]; 
+        const match = callerLine.match(/:(\d+):\d+\)?$/);  
+        const lineNumber = match ? parseInt(match[1]) : null;
+
+        groupLogs.push({
+          name: name,
+          line: lineNumber
+        });
+      }
+    }
+
+    let timerName = "Timer Button";
+
+    let startTimerBtn = errorBtns.find(btn => btn.textContent === "Start Timer");
+    let endTimerBtn = errorBtns.find(btn => btn.textContent === "End Timer");
+
+    startTimerBtn.addEventListener('click', () => {
+      console.time(timerName);
+      logAction("Start Timer");
+    });
+
+    endTimerBtn.addEventListener('click', () => {
+      console.timeEnd(timerName);
+      logAction("End Timer");
+    });
+
+    //last two
+
 
   </script>
 </body>
