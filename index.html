@@ -7,6 +7,14 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Lab 9</title>
 
+  <script src="https://cdn.trackjs.com/agent/v3/latest/t.js"></script>
+  <script>
+    window.TrackJS && TrackJS.install({ 
+      token: "910d9364452c4a59b1ffbd74fb0cbd74"
+      // for more configuration options, see https://docs.trackjs.com
+    });
+  </script>
+
   <style>
     button {
       margin: 3px;
@@ -113,10 +121,20 @@
       logAction("Console Log");
     });
 
+//   errorBtn.addEventListener('click', () => {
+//     console.error("Console Error Demo");
+//      logAction("Console Error");
+//    });
     errorBtn.addEventListener('click', () => {
-      console.error("Console Error Demo");
-      logAction("Console Error");
+      try {
+        throw new Error("Throw a new error");
+      } catch (err) {
+        console.error("Caught an error:", err.message);
+      } finally {
+        logAction("Console Error with throw/catch");
+      }
     });
+
 
     let countBtn = errorBtns.find(btn => btn.textContent === "Console Count");
     let warnBtn = errorBtns.find(btn => btn.textContent === "Console Warn");
@@ -157,10 +175,21 @@
       logAction("Console Dir");
     });
 
+//    dirxmlBtn.addEventListener('click', (e) => {
+//      console.dirxml(e.target);
+//     logAction("Console Dirxml");
+//    });
     dirxmlBtn.addEventListener('click', (e) => {
-      console.dirxml(e.target);
-      logAction("Console Dirxml");
+      try {
+        if (!e || !e.target) throw new Error("No DOM element found to inspect");
+        console.dirxml(e.target);
+      } catch (err) {
+        console.error("dirxml failed:", err.message);
+      } finally {
+        logAction("Console Dirxml (try/catch)");
+      }
     });
+
 
     let groupStartBtn = errorBtns.find(btn => btn.textContent === "Console Group Start");
     let groupEndBtn = errorBtns.find(btn => btn.textContent === "Console Group End");
@@ -234,12 +263,26 @@
       logAction("Trace");
     });
 
+//    let triggerErrorBtn = errorBtns.find(btn => btn.textContent === "Trigger a Global Error");
+
+//    triggerErrorBtn.addEventListener('click', () => {
+//      console.log("Sadly an error happened my friend");
+//     boom(); // 故意触发未定义函数，产生 ReferenceError
+//      logAction("Trigger a Global Error");
+//    });
+// Global error handler
+    window.onerror = function(message, source, lineno, colno, error) {
+      console.log("Global error captured:");
+      console.log("Message:", message);
+      console.log("Source:", source);
+      console.log("Line:", lineno, "Column:", colno);
+      console.log("Error object:", error);
+      return true;  // prevent default browser error popup
+    };
     let triggerErrorBtn = errorBtns.find(btn => btn.textContent === "Trigger a Global Error");
 
     triggerErrorBtn.addEventListener('click', () => {
-      console.log("Sadly an error happened my friend");
-      boom(); // 故意触发未定义函数，产生 ReferenceError
-      logAction("Trigger a Global Error");
+      undefinedFunctionCall(); // 故意触发一个 ReferenceError
     });
 
 
