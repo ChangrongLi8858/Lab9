@@ -267,7 +267,7 @@
 
 //    triggerErrorBtn.addEventListener('click', () => {
 //      console.log("Sadly an error happened my friend");
-//     boom(); // 故意触发未定义函数，产生 ReferenceError
+//     boom(); 
 //      logAction("Trigger a Global Error");
 //    });
 // Global error handler
@@ -282,7 +282,7 @@
     let triggerErrorBtn = errorBtns.find(btn => btn.textContent === "Trigger a Global Error");
 
     triggerErrorBtn.addEventListener('click', () => {
-      undefinedFunctionCall(); // 故意触发一个 ReferenceError
+      undefinedFunctionCall(); 
     });
 
 
